@@ -1,7 +1,14 @@
+"""Script to generate html file with information about animals in the
+database"""
+
 import json
 
 
 ANIMALS_JSONFILE = "animals_data.json"
+HTML_TEMPLATE = "animals_template.html"
+REPLACE_STR = "__REPLACE_ANIMALS_INFO__"
+ANIMALS_HTML_PATH = "animals.html"
+TABS_NUM = 3  # number of tabs to add for nicer formatting
 
 
 def load_data(file_path: str):
@@ -28,36 +35,89 @@ def load_data(file_path: str):
     return None
 
 
-def print_animal(animal: dict):
+def serialize_animal(animal: dict) -> str:
     """
-    Print available information about an animal (name, diet, location and type).
+    Export available information about an animal (name, diet, location and
+    type) to string.
 
     Args:
-        animal: dictionary with the data about the animal.
+        animal: Dictionary with the data about the animal.
+
+    Returns:
+        String with available information about the animal.
     """
+    animal_info = "\t" * TABS_NUM
+    animal_info += '<li class="cards__item">\n'
     if animal.get("name"):
-        print(f"Name: {animal["name"]}")
+        name = animal.get("name")
+        animal_info += "\t" * TABS_NUM
+        animal_info += f'<div class="card__title">{name}</div>\n'
+
+    animal_info += "\t" * (TABS_NUM + 1)
+    animal_info += '<p class="card__text">\n'
+
     if animal.get("characteristics", {}).get("diet"):
-        print(f"Diet: {animal["characteristics"]["diet"]}")
+        diet = animal.get("characteristics", {}).get("diet")
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Diet:</strong> {diet}<br/>\n"
     if animal.get("locations"):
-        print(f"Location: {animal["locations"][0]}")
+        location = animal.get("locations")[0]
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Location:</strong> {location}<br/>\n"
     if animal.get("characteristics", {}).get("type"):
-        print(f"Type: {animal["characteristics"]["type"]}")
+        animal_type = animal.get("characteristics", {}).get("type")
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Type:</strong> {animal_type}<br/>\n"
+    animal_info += "\t" * (TABS_NUM + 1)
+    animal_info += "</p>\n"
+    animal_info += "\t" * TABS_NUM
+    animal_info += "</li>"
+    return animal_info
 
 
-def print_animals():
+def generate_html() -> str:
     """
-    Load and print information about animals in the database.
+    Load html template and add information about the animals into the template.
+
+    Returns:
+        Generated html with information about the animals.
     """
     animals = load_data(ANIMALS_JSONFILE)
+    animals_info = ""
     for animal in animals:
-        print_animal(animal)
-        print()
+        animals_info += serialize_animal(animal)
+        animals_info += "\n"
+
+    try:
+        with open(HTML_TEMPLATE, "r", encoding="utf-8") as f:
+            template = f.read()
+        if REPLACE_STR in template:
+            return template.replace(REPLACE_STR, animals_info)
+        print(f"Cannot find {REPLACE_STR} in the template.")
+    except FileNotFoundError:
+        print(f"{HTML_TEMPLATE} does not exist.")
+    except PermissionError:
+        print(f"Cannot read file {HTML_TEMPLATE}. Permission denied.")
+    except UnicodeDecodeError:
+        print(f"Cannot read file {HTML_TEMPLATE}. Encoding should be UTF-8.")
+    except OSError as e:
+        print(f"Failed to load {HTML_TEMPLATE}: {e}")
+    return None
 
 
-def main():
-    print_animals()
+def save_html():
+    """
+    Save generated html with information about animals to file.
+    """
+    animals_html = generate_html()
+    if animals_html:
+        try:
+            with open(ANIMALS_HTML_PATH, "w", encoding="utf-8") as f:
+                f.write(animals_html)
+        except OSError as e:
+            print(f"Failed to save generated html to '{ANIMALS_HTML_PATH}:' "
+                  f"{e}")
 
 
 if __name__ == "__main__":
-    main()
+    save_html()
