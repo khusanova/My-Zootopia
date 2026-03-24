@@ -42,15 +42,16 @@ def get_animal_information(animal: dict) -> str:
     Returns:
         String with available information about the animal.
     """
-    animal_info = ""
+    animal_info = '<li class="cards__item">\n'
     if animal.get("name"):
-        animal_info += f"Name: {animal["name"]}\n"
+        animal_info += f"Name: {animal["name"]}<br/>\n"
     if animal.get("characteristics", {}).get("diet"):
-        animal_info += f"Diet: {animal["characteristics"]["diet"]}\n"
+        animal_info += f"Diet: {animal["characteristics"]["diet"]}<br/>\n"
     if animal.get("locations"):
-        animal_info += f"Location: {animal["locations"][0]}\n"
+        animal_info += f"Location: {animal["locations"][0]}<br//>\n"
     if animal.get("characteristics", {}).get("type"):
-        animal_info += f"Type: {animal["characteristics"]["type"]}\n"
+        animal_info += f"Type: {animal["characteristics"]["type"]}<br/>\n"
+    animal_info += "</li>"
     return animal_info
 
 
