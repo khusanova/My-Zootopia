@@ -99,17 +99,7 @@ def save_html():
                   f"{e}")
 
 
-def print_animals():
-    """
-    Load and print information about animals in the database.
-    """
-    animals = load_data(ANIMALS_JSONFILE)
-    for animal in animals:
-        print(get_animal_information(animal))
-
-
 def main():
-    print_animals()
     save_html()
 
 
