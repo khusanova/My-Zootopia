@@ -2,6 +2,8 @@ import json
 
 
 ANIMALS_JSONFILE = "animals_data.json"
+HTML_TEMPLATE = "animals_template.html"
+REPLACE_STR = "__REPLACE_ANIMALS_INFO__"
 
 
 def load_data(file_path: str):
@@ -49,6 +51,36 @@ def get_animal_information(animal: dict) -> str:
     if animal.get("characteristics", {}).get("type"):
         animal_info += f"Type: {animal["characteristics"]["type"]}\n"
     return animal_info
+
+
+def generate_html() -> str:
+    """
+    Load html template and add information about the animals into the template.
+
+    Returns:
+        Generated html with information about the animals.
+    """
+    animals = load_data(ANIMALS_JSONFILE)
+    animals_info = ""
+    for animal in animals:
+        animals_info += get_animal_information(animal)
+        animals_info += "\n"
+
+    try:
+        with open(HTML_TEMPLATE, "r", encoding="utf-8") as f:
+            template = f.read()
+        if REPLACE_STR in template:
+            return template.replace(REPLACE_STR, animals_info)
+        else:
+            print(f"Cannot find {REPLACE_STR} in the template.")
+    except FileNotFoundError:
+        print(f"{HTML_TEMPLATE} does not exist.")
+    except PermissionError:
+        print(f"Cannot read file {HTML_TEMPLATE}. Permission denied.")
+    except UnicodeDecodeError:
+        print(f"Cannot read file {HTML_TEMPLATE}. Encoding should be UTF-8.")
+    except OSError as e:
+        print(f"Failed to load {HTML_TEMPLATE}: {e}")
 
 
 def print_animals():
