@@ -5,6 +5,7 @@ ANIMALS_JSONFILE = "animals_data.json"
 HTML_TEMPLATE = "animals_template.html"
 REPLACE_STR = "__REPLACE_ANIMALS_INFO__"
 ANIMALS_HTML_PATH = "animals.html"
+TABS_NUM = 3  # number of tabs to add for nicer formatting
 
 
 def load_data(file_path: str):
@@ -42,15 +43,31 @@ def get_animal_information(animal: dict) -> str:
     Returns:
         String with available information about the animal.
     """
-    animal_info = '<li class="cards__item">\n'
+    animal_info = "\t" * TABS_NUM
+    animal_info += '<li class="cards__item">\n'
     if animal.get("name"):
-        animal_info += f"Name: {animal["name"]}<br/>\n"
+        name = animal.get("name")
+        animal_info += "\t" * TABS_NUM
+        animal_info += f'<div class="card__title">{name}</div>\n'
+
+    animal_info += "\t" * (TABS_NUM + 1)
+    animal_info += '<p class="card__text">\n'
+
     if animal.get("characteristics", {}).get("diet"):
-        animal_info += f"Diet: {animal["characteristics"]["diet"]}<br/>\n"
+        diet = animal.get("characteristics", {}).get("diet")
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Diet:</strong> {diet}<br/>\n"
     if animal.get("locations"):
-        animal_info += f"Location: {animal["locations"][0]}<br//>\n"
+        location = animal.get("locations")[0]
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Location:</strong> {location}<br/>\n"
     if animal.get("characteristics", {}).get("type"):
-        animal_info += f"Type: {animal["characteristics"]["type"]}<br/>\n"
+        animal_type = animal.get("characteristics", {}).get("type")
+        animal_info += "\t" * (TABS_NUM + 1)
+        animal_info += f"<strong>Type:</strong> {animal_type}<br/>\n"
+    animal_info += "\t" * (TABS_NUM + 1)
+    animal_info += "</p>\n"
+    animal_info += "\t" * TABS_NUM
     animal_info += "</li>"
     return animal_info
 
