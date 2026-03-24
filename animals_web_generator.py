@@ -23,3 +23,14 @@ def load_data(file_path: str):
     except OSError as e:
         print(f"Failed to load {file_path}: {e}")
     return None
+
+
+def print_animal(animal: dict):
+    """
+    Print available information about an animal (name, diet, location and type).
+
+    Args:
+        animal: dictionary with the data about the animal.
+    """
+    if animal.get("name"):
+        print(f"Name: {animal["name"]}")
