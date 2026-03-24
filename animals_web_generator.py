@@ -34,3 +34,12 @@ def print_animal(animal: dict):
     """
     if animal.get("name"):
         print(f"Name: {animal["name"]}")
+
+
+def main():
+    animals = load_data("animals_data.json")
+    print_animal(animals[0])
+
+
+if __name__ == "__main__":
+    main()
