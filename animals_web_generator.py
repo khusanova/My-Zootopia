@@ -4,6 +4,7 @@ import json
 ANIMALS_JSONFILE = "animals_data.json"
 HTML_TEMPLATE = "animals_template.html"
 REPLACE_STR = "__REPLACE_ANIMALS_INFO__"
+ANIMALS_HTML_PATH = "animals.html"
 
 
 def load_data(file_path: str):
@@ -81,6 +82,21 @@ def generate_html() -> str:
         print(f"Cannot read file {HTML_TEMPLATE}. Encoding should be UTF-8.")
     except OSError as e:
         print(f"Failed to load {HTML_TEMPLATE}: {e}")
+    return None
+
+
+def save_html():
+    """
+    Save generated html with information about animals to file.
+    """
+    animals_html = generate_html()
+    if animals_html:
+        try:
+            with open(ANIMALS_HTML_PATH, "w", encoding="utf-8") as f:
+                f.write(animals_html)
+        except OSError as e:
+            print(f"Failed to save generated html to '{ANIMALS_HTML_PATH}:' "
+                  f"{e}")
 
 
 def print_animals():
@@ -94,6 +110,7 @@ def print_animals():
 
 def main():
     print_animals()
+    save_html()
 
 
 if __name__ == "__main__":
