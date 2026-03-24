@@ -99,9 +99,5 @@ def save_html():
                   f"{e}")
 
 
-def main():
-    save_html()
-
-
 if __name__ == "__main__":
-    main()
+    save_html()
