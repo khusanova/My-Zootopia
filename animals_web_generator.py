@@ -28,21 +28,27 @@ def load_data(file_path: str):
     return None
 
 
-def print_animal(animal: dict):
+def get_animal_information(animal: dict) -> str:
     """
-    Print available information about an animal (name, diet, location and type).
+    Export available information about an animal (name, diet, location and
+    type) to string.
 
     Args:
-        animal: dictionary with the data about the animal.
+        animal: Dictionary with the data about the animal.
+
+    Returns:
+        String with available information about the animal.
     """
+    animal_info = ""
     if animal.get("name"):
-        print(f"Name: {animal["name"]}")
+        animal_info += f"Name: {animal["name"]}\n"
     if animal.get("characteristics", {}).get("diet"):
-        print(f"Diet: {animal["characteristics"]["diet"]}")
+        animal_info += f"Diet: {animal["characteristics"]["diet"]}\n"
     if animal.get("locations"):
-        print(f"Location: {animal["locations"][0]}")
+        animal_info += f"Location: {animal["locations"][0]}\n"
     if animal.get("characteristics", {}).get("type"):
-        print(f"Type: {animal["characteristics"]["type"]}")
+        animal_info += f"Type: {animal["characteristics"]["type"]}\n"
+    return animal_info
 
 
 def print_animals():
@@ -51,8 +57,7 @@ def print_animals():
     """
     animals = load_data(ANIMALS_JSONFILE)
     for animal in animals:
-        print_animal(animal)
-        print()
+        print(get_animal_information(animal))
 
 
 def main():
