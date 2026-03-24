@@ -1,6 +1,9 @@
 import json
 
 
+ANIMALS_JSONFILE = "animals_data.json"
+
+
 def load_data(file_path: str):
     """
     Load data from a JSON file.
@@ -42,9 +45,18 @@ def print_animal(animal: dict):
         print(f"Type: {animal["characteristics"]["type"]}")
 
 
+def print_animals():
+    """
+    Load and print information about animals in the database.
+    """
+    animals = load_data(ANIMALS_JSONFILE)
+    for animal in animals:
+        print_animal(animal)
+        print()
+
+
 def main():
-    animals = load_data("animals_data.json")
-    print_animal(animals[0])
+    print_animals()
 
 
 if __name__ == "__main__":
