@@ -1,3 +1,6 @@
+"""Script to generate html file with information about animals in the
+database"""
+
 import json
 
 
@@ -90,8 +93,7 @@ def generate_html() -> str:
             template = f.read()
         if REPLACE_STR in template:
             return template.replace(REPLACE_STR, animals_info)
-        else:
-            print(f"Cannot find {REPLACE_STR} in the template.")
+        print(f"Cannot find {REPLACE_STR} in the template.")
     except FileNotFoundError:
         print(f"{HTML_TEMPLATE} does not exist.")
     except PermissionError:
