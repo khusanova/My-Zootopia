@@ -32,7 +32,7 @@ def load_data(file_path: str):
     return None
 
 
-def get_animal_information(animal: dict) -> str:
+def serialize_animal(animal: dict) -> str:
     """
     Export available information about an animal (name, diet, location and
     type) to string.
@@ -82,7 +82,7 @@ def generate_html() -> str:
     animals = load_data(ANIMALS_JSONFILE)
     animals_info = ""
     for animal in animals:
-        animals_info += get_animal_information(animal)
+        animals_info += serialize_animal(animal)
         animals_info += "\n"
 
     try:
